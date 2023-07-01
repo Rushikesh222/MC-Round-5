@@ -4,13 +4,15 @@ import { useState } from "react";
 
 export const Detial = () => {
   const { userId } = useParams();
-  const [fullRecipe, setFullrecipe] = useState([]);
-  const recipeDetials = Recipe.filter((items) => items.id === userId);
-  setFullrecipe(recipeDetials);
-  console.log(fullRecipe);
+  const [fullRecipe, setFullrecipe] = useState(
+    Recipe.filter((items) => items.id === parseInt(userId))
+  );
+
+  //   setFullrecipe(recipeDetials);
+
   return (
     <div>
-      {fullRecipe.find((items) => {
+      {fullRecipe.map((items) => {
         const { id, image, name, ingredients, cuisinetype, instructions } =
           items;
         return (
