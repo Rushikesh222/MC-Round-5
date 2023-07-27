@@ -1,59 +1,57 @@
-import { useState } from "react";
-import { Recipe } from "../../assets/Data";
-
 import "./Menu.css";
 import { useNavigate } from "react-router-dom";
+import { useRecipe } from "../context/Cardcontext";
 export const Menu = () => {
   const navigate = useNavigate();
-  const [searchItems, setsearchItems] = useState([]);
-  const [categoryItems, setCategoryItems] = useState(Recipe);
-  console.log(categoryItems);
-  const handelSearch = (event) => {
-    const inputvalue = event.target.value;
-    const filtersInput = Recipe.filter(
-      (items) =>
-        items.name.toLowerCase().includes(inputvalue.toLowerCase()) ||
-        items.ingredients.toLowerCase().includes(inputvalue.toLowerCase()) ||
-        items.cuisinetype.toLowerCase().includes(inputvalue.toLowerCase())
-    );
-    setsearchItems(filtersInput);
-  };
-  const handlerCategory = (e) => {
-    const inputCategory = e.target.value;
-    const filterCategory = Recipe.filter((items) => {
-      if (inputCategory === "name") {
-        setCategoryItems(items?.name);
-      }
-      if (inputCategory === "ingredients") {
-        setCategoryItems(items.ingredients);
-      }
-      if (inputCategory === "type") {
-        setCategoryItems(items.cuisinetype);
-      } else {
-        setCategoryItems(Recipe);
-      }
-    });
-    console.log(filterCategory);
+  const { state, dispatch, searchRecipe } = useRecipe();
+  console.log(searchRecipe());
+  const handleSearchingCategory = (e) => {
+    dispatch({ type: "SET_SEARCH_CATEGORY", payload: e.target.value });
   };
 
   return (
     <div className="items">
-      <input type="text" placeholder="Seacrh" onChange={handelSearch} />
-      <form onChange={handlerCategory}>
-        <label>
-          Name
-          <input type="radio" name="name" value="name" />
-        </label>
-        <label>
-          Ingredients
-          <input type="radio" name="name" value="ingredients" />
-        </label>
-        <label>
-          Cuisine type
-          <input type="radio" name="name" value="type" />
-        </label>
-      </form>
-      {searchItems.map((items) => {
+      <input
+        type="text"
+        placeholder="Search"
+        value={state?.searchInput}
+        onChange={(e) =>
+          dispatch({ type: "SEARCH_INPUT", payload: e.target.value })
+        }
+      />
+
+      <label>
+        Name
+        <input
+          type="radio"
+          name="name"
+          value="name"
+          checked={state?.searchCategory === "name"}
+          onChange={handleSearchingCategory}
+        />
+      </label>
+      <label>
+        Ingredients
+        <input
+          type="radio"
+          name="name"
+          value="ingredients"
+          checked={state?.searchCategory === "ingredients"}
+          onChange={handleSearchingCategory}
+        />
+      </label>
+      <label>
+        Cuisine type
+        <input
+          type="radio"
+          name="name"
+          value="type"
+          checked={state?.searchCategory === "type"}
+          onChange={handleSearchingCategory}
+        />
+      </label>
+
+      {searchRecipe()?.map((items) => {
         const { id, image, name, ingredients, cuisinetype, instructions } =
           items;
         return (
