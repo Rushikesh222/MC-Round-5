@@ -19,7 +19,6 @@ export const Menu = () => {
           dispatch({ type: "SEARCH_INPUT", payload: e.target.value })
         }
       />
-
       <label>
         Name
         <input

@@ -21,7 +21,6 @@ export const RecipeProvider = ({ children }) => {
               .includes(state?.searchInput.toLowerCase());
           } else if (state?.searchCategory === "ingredients") {
             return recipe.ingredients
-              .join("")
               .toLowerCase()
               .includes(state?.searchInput.toLowerCase());
           } else if (state?.searchCategory === "type") {
@@ -35,7 +34,7 @@ export const RecipeProvider = ({ children }) => {
     const storedRecipies = localStorage.getItem("recipes");
     if (storedRecipies) {
       dispatch({
-        type: "SET_RECIPIES",
+        type: "SET_RECEPIES",
         payload: JSON.parse(storedRecipies),
       });
     } else {
